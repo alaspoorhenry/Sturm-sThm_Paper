@@ -1,0 +1,127 @@
+\documentclass[a4paper]{article}
+
+%% Language and font encodings
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+
+%% Sets page size and margins
+\usepackage[a4paper,top=3cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+%% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{relsize}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  language=Python,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  breaklines=false,
+  breakatwhitespace=true,
+  tabsize=4
+}
+\begin{document}
+% \section{Introduction}
+% This paper is concerned with Algebraic Geometry, specifically Real Algebraic Geometry, and methods and algorithms for finding real roots of polynomial equations within certain intervals. Of course, for any non-constant univariate polynomial, the number of complex roots it could potentially have is guaranteed to equal the degree of the polynomial counted with multiplicity. Counting the number of complex roots is easy, but counting real roots is more difficult. This paper will be an exploration on the counting of real roots given any polynomial equation in R[X].
+% \newline
+%  The following paper will cover Descartes’ Law of Signs, the Fourier-Budan Theorem, and Sturm’s theorem and its algorithm for finding real roots of polynomial equations using Sturm chains and other bracketing methods, as well as an analysis of the time and space complexity of these algorithms.
+
+\section{Introduction}
+The study of methods and algorithms to find solutions to polynomials has been a important topic in mathematics since the beginnings of algebra. Algebraic formulas have been discovered over the centuries for the use in solving univariate polynomials up to quintic polynomials, where it was proven by Paolo Ruffini and Niels Henrik Abel that polynomials of degree 5 and further didn't possess such a formula.
+\\~
+Since then, many numerical methods and algorithms have been developed for finding real roots of complicated univariate polynomials of high degree, with one of the first real-root isolation algorithms being yielded by Sturm's theorem. Though the number of complex roots of a polynomial can be easily counted up to multiplicity by the Fundamental Theorem of Algebra (and finding these roots in certain subsets of the complex plain by methods using Rouche's theorem) the counting of and finding of real roots hasn't been as easy. The focus of this paper is to have a quick examination of Sturm's theorem, how to prove it, and also how algorithms have been created involving it for the purposes of real root counting and finding.
+\section{Definitions}
+% Algebraic Geometry – Study of the geometric representation of solutions of a system of multivariate polynomials defined over some structure. You can call these geometric representations algebraic varieties or sets. (Sets are algebraic varieties with a defined locus)
+% \newline
+% \newline
+% Real Algebraic Geometry – Study of real number solutions to algebraic equations with real number coefficients and associations between them. (i.e the study of real algebraic sets)
+% \newline
+% \newline
+First, some preliminary definitions are required before we can state and prove Sturm's theorem.
+Consider the polynomial ring $\mathbb{R}$[x], a $\mathbf{Sturm\,\,Chain}$ of a polynomial $p \,\in\, \mathbb{R}$[x] is of the following form. \newline
+\begin{math}
+    p_0 = p \\~
+    p_1 = p^{\prime} \\~
+    p_i = -rem(p_{i-2}, p_{i-1}) \text{ for all } i \, > 1 \text{ where } rem(q, q^{\prime}) =  q - q^{\prime}g \\~ \text{where } g \text{ is the quotient of polynomial division between } q \text{ and } q^{\prime} 
+\end{math}
+\\~
+\\~
+Given a sequence $\mathrm{a = a_{0}, a_{1}, a_{2}, ... , a_{n}}$ of elements in $\mathrm{R - \{0\}}$, the sign variations of sequence a is defined inductively as the following:
+\newline
+\\~
+Var($\mathrm{a_{0}}$) = 0 \newline
+Var($\mathrm{a_{0},...,a_{n}}$) = 
+\begin{math}
+\begin{cases}
+  Var(a_{0},...,a_{n}) = Var({a_{1},...,a_{n}}) + 1 \text{ if } a_{0}a_{1} < 1 \\
+  Var(a_{0},...,a_{n) = Var(a_{1},...,a_{n}) \text{ if } a_{0}a_{1} > 1}
+\end{cases}
+\end{math}
+\\~
+\\~
+The above definition for the size variations of a sequence can be thought of as the number of times the elements in the sequence change from being a negative number to a positive and vice versa.
+\\~
+\\~
+We must also define what it means to consider the number of sign variations of a sequence of polynomials over an interval of the real line. Let a, b $\in \mathbb{R}$ and $P$ $\subset$ $\mathbb{R}$[x]. Without loss of generality, assume a < b. The number of sign changes of a sequence of polynomials $P$ over the interval (a, b) can be denoted $Var(P;\text{a},\text{b})$ and defined as, with $P = \{p_0, p_1, ... , p_n\}\, , \, n > 0$ as $Var(P;\text{a})-Var(P;\text{b})$, with $P;\text{a}$ denoting the sequence $\{p_0(a), p_1(a), ... , p_n(a)\}$ and similarily for $P;\text{b}$.
+% \section{Descartes' law of signs}
+% Let P be a polynomial $\mathrm{\in}$ R[X] (or R over symbol X). The number of sign variations of a polynomial (written Var($\mathrm{P}$)) can be expressed as the sign changes of its enumerated coefficients. Let po($\mathrm{P}$) be the number of positive real roots of polynomial $\mathrm{P}$.
+% \newline
+% Then we can observe the following: 
+% \newline
+% \begin{description}
+% \item [$\cdot$] Var(P) $\mathrm{\geq}$ po(P)
+% \item [$\cdot$] Var(P) - po(P) is even
+% \end{description}
+% The above can be proven through the use of the Fourier-Budan Theorem.
+% \pagebreak
+% \section{Fourier-Budan Theorem}
+% First we have to define a separate sign variation function across an interval for a set of polynomials P. Let $\mathrm{a, b \in R}$. Let a<b WLOG. The number of sign changes can be thought of as the difference between the number of sign changes of the set evaluated at point b (Var(P;b)) and number of sign changes at point a (Var(P;a)). \newline
+% The Fourier-Budan Theorem states the following, \newline
+% Let $\mathcal{P}$ = {der(P)}, with a single variable polynomial equation P, and der(P) being the set of the 0th to nth derivative of P. \newline \newline
+% The number of sign changes of $\mathcal{P}$ over an interval in the reals is always larger than the number of real roots within that interval for P, counted with multiplicity and, \newline
+% The difference between the number of sign changes of $\mathcal{P}$ and the number of real roots within that interval for P (counted with multiplicity) is always even. \newline
+% So this theorem gives us an upper bound for our number of real roots in any interval within the reals.
+% \newline
+% \newline
+% So we can see that Descartes' law of signs is simply a generalization of this theorem, with Var(P) = Var($\mathcal{P}$;0,$\mathrm{\infty}$). The signs of the coefficients are preserved when finding the successive derivatives of P, and the signs of the set of successive derivatives do not change at $\mathrm{\infty}$. \newline \newline
+% Example: \newline
+% Given polynomial $\mathrm{p(x) = x^{3} - x + 1}$ on interval (0,2), the following sign variations can be observed: \newline
+% $\mathrm{F_{2} = \{1,-1,0,6\}}$ - so in total there are 2 sign changes for $\mathrm{p(2)}$. \newline
+% $\mathrm{F_{0} = \{7,11,12,6\}}$ - so in total there are 0 sign changes for $\mathrm{p(0)}$. \newline
+% Thus, by the Fourier-Budan theorem, there is an upperbound of 2 real roots in the open interval (0,2). So there are either 0 or 2 roots of p within this interval, due to difference of the number of sign changes and the number of actual real roots with this interval is always even.
+% \newline
+\section{Sturm's Theorem}
+Sturm's theorem gives us a way of counting the number of real roots a polynomial $p$ $\in$ $\mathbb{R}$[X] possesses given an interval of the real line with endpoints $a, b$ $\in$ $\mathbb{R} \cup\{-\infty, +\infty\}$.
+\\~
+The theorem can broken down into cases when p is a square-free polynomial (a polynomial with no roots greater in multiplicity than 1) and when it's not, and is stated as follows,
+\newline \newline
+If $p$ $\in$ $\mathbb{R}$[X] is square-free, with $\mathcal{P}$ being a Sturm chain for $p$, then for real numbers a, b, with a < b, the number of distinct real roots of p in the half interval (a,b] is equal to the $Var$($\mathcal{P}$;a,b)\newline
+In the non square-free case, the statement is the same, except neither a nor b can be a multiple root of polynomial p.
+
+\pagebreak
+
+\section{Proof of Sturm's theorem}
+
+For the square-free case, we know that
+
+\section{Example of using Sturm's theorem}
+
+
+\end{document}
